@@ -1,8 +1,16 @@
 from rest_framework import viewsets
 
-from library_app.models import Book, Borrowing
-from library_app.serializers import BookSerializer, BookListSerializer, \
-    BorrowingSerializer, BorrowingListSerializer, BorrowingDetailSerializer
+from library_app.models import Book, Borrowing, Payment
+from library_app.serializers import (
+    BookSerializer,
+    BookListSerializer,
+    BorrowingSerializer,
+    BorrowingListSerializer,
+    BorrowingDetailSerializer,
+    PaymentSerializer,
+    PaymentListSerializer,
+    PaymentDetailSerializer,
+)
 
 
 class BookViewSet(viewsets.ModelViewSet):
@@ -36,3 +44,24 @@ class BorrowingViewSet(viewsets.ModelViewSet):
             return BorrowingDetailSerializer
 
         return BorrowingSerializer
+
+
+class PaymentViewSet(viewsets.ModelViewSet):
+    queryset = Payment.objects.all()
+    serializer_class = PaymentSerializer
+
+    def get_queryset(self):
+        queryset = self.queryset
+        if self.action == "list" or "retrieve":
+            queryset = queryset.select_related("borrowing__user_id")
+
+        return queryset
+
+    def get_serializer_class(self):
+        if self.action == "list":
+            return PaymentListSerializer
+
+        if self.action == "retrieve":
+            return PaymentDetailSerializer
+
+        return PaymentSerializer

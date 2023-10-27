@@ -8,8 +8,7 @@ class Book(models.Model):
         SOFT = "Soft"
 
     title = models.CharField(max_length=255)
-    author = models.ForeignKey(settings.AUTH_USER_MODEL,
-                               on_delete=models.CASCADE)
+    author = models.CharField(max_length=255)
     cover = models.CharField(max_length=8, choices=CoverChoices.choices)
     inventory = models.PositiveIntegerField(null=True, default=1)
     daily_fee = models.DecimalField(max_digits=7, decimal_places=2)
@@ -24,6 +23,9 @@ class Borrowing(models.Model):
     actual_return_date = models.DateField()
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+
+    class Meta:
+        ordering = ["-borrow_date"]
 
     def __str__(self):
         return f"{self.book}, {self.borrow_date}({self.id})"

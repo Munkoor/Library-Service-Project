@@ -6,7 +6,7 @@ from library_app.views import BookViewSet, BorrowingViewSet, PaymentViewSet
 router = routers.DefaultRouter()
 
 router.register("books", BookViewSet)
-router.register("borrowing", BorrowingViewSet)
+router.register("borrowings", BorrowingViewSet)
 router.register("payments", PaymentViewSet)
 
 

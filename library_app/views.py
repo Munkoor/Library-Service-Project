@@ -53,7 +53,7 @@ class PaymentViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         queryset = self.queryset
         if self.action == "list" or "retrieve":
-            queryset = queryset.select_related("borrowing__user_id")
+            queryset = queryset.select_related("borrowing__user")
 
         return queryset
 
